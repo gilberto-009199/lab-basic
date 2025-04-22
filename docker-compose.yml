@@ -1,0 +1,33 @@
+services:
+  gns3-server:
+    build: 
+      context: ./gns3/
+      dockerfile: dockerfile
+    environment:
+      - GNS3_DOCKER_HOST=unix:///var/run/docker.sock
+    ports:
+      - "8001:3080"
+      - "5000-5400:5000-5400" # Dynamips, etc
+      - "39978:39978"
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+#      - /dev:/dev
+#      - /run/udev:/run/udev:ro
+#      - /var/run/libvirt:/var/run/libvirt
+#      - /etc/libvirt:/etc/libvirt 
+
+##      - /var/run/docker.sock:/var/run/docker.sock
+#      - /lib/modules:/lib/modules
+#      - /sys/fs/cgroup:/sys/fs/cgroup 
+
+      - ./gns3/docker:/root/.local/share/GNS3/docker
+      - ./gns3/images:/root/GNS3/images
+      - ./gns3/appliances:/root/GNS3/appliances
+
+      - ./gns3/projects:/root/GNS3/projects
+      - ./gns3/symbols:/root/GNS3/symbols
+    privileged: true
+# /root/.local/share/GNS3/docker
+# /root/.local/share/GNS3/appliances/

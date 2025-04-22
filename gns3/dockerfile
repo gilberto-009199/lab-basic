@@ -1,0 +1,92 @@
+FROM ubuntu:24.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
+
+RUN apt-get update && apt-get install -y software-properties-common
+RUN add-apt-repository ppa:gns3/ppa
+RUN apt-get update && apt-get install -y \
+    locales \
+    python3-pip \
+    python3-dev \
+    qemu-system-x86 \
+    qemu-kvm \
+    libvirt-daemon-system \
+    libvirt-clients \
+    git \
+    debconf-utils \
+    curl \
+    libpcap-dev \
+    dirmngr \
+    cmake \
+    wget \
+    bison \
+    flex \
+    virtinst \
+    pipx \
+    tigervnc-standalone-server \
+    tigervnc-common \
+    x11vnc \
+    xauth \
+    xterm
+
+RUN apt-get install -y vpcs ubridge dynamips libelf-dev
+
+RUN echo "wireshark-common wireshark-common/install-setuid boolean false" | debconf-set-selections && \
+    apt-get install -y wireshark
+
+RUN locale-gen en_US.UTF-8
+
+RUN wget https://archive.debian.org/debian/pool/main/b/busybox/busybox-static_1.30.1-4_amd64.deb -O busybox.deb && \ 
+    dpkg -i busybox.deb || apt-get install -fy \
+    rm -Rf busybox.deb
+
+RUN mkdir -m 0755 -p /etc/apt/keyrings && \
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
+    echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+    https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+    | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
+    apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+WORKDIR /opt/iniparser
+RUN git clone http://github.com/ndevilla/iniparser.git /opt/iniparser
+RUN mkdir build && \
+    cd build && \
+    cmake .. && \
+    make
+
+#WORKDIR /opt/iouyap
+#RUN git clone https://github.com/GNS3/iouyap.git /opt/iouyap
+#RUN make && \
+#    make install
+
+WORKDIR /opt/dynamips
+RUN git clone https://github.com/GNS3/dynamips.git /opt/dynamips
+RUN mkdir build && \
+    cd build && \
+    cmake .. && \
+    make && \ 
+    make install
+
+#WORKDIR /opt/gns3
+#RUN git clone https://github.com/GNS3/gns3-server.git /opt/gns3
+#RUN pip3 install -r /opt/gns3/requirements.txt && \
+#    cp /opt/gns3/gns3server/compute/docker/resources/init.sh /opt/gns3/gns3server/compute/docker/resources/bin/init.sh &&\
+#    pip3 install -e /opt/gns3
+
+RUN sh -c "usermod -aG ubridge,libvirt,kvm,docker $(whoami)"
+RUN pipx install gns3-server
+
+EXPOSE 3080
+
+COPY ./docker-entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+
