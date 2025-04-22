@@ -186,8 +186,8 @@
                 "symbol": ":/symbols/affinity/square/blue/nat.svg",
                 "template_id": "2d7eb722-90e8-56c1-8dfa-a30d79847984",
                 "width": 60,
-                "x": 191,
-                "y": -233,
+                "x": -227,
+                "y": -349,
                 "z": 1
             },
             {
@@ -278,8 +278,8 @@
                 "symbol": ":/symbols/affinity/square/blue/switch.svg",
                 "template_id": "92a43283-9c7e-5a68-9695-1f05a2e8dd05",
                 "width": 60,
-                "x": -364,
-                "y": -103,
+                "x": -444,
+                "y": -134,
                 "z": 1
             },
             {
@@ -312,8 +312,8 @@
                 "symbol": ":/symbols/affinity/square/blue/client.svg",
                 "template_id": "52136454-1f50-590a-94e4-816bd02d1062",
                 "width": 60,
-                "x": -556,
-                "y": -248,
+                "x": -621,
+                "y": -333,
                 "z": 1
             },
             {
@@ -380,7 +380,7 @@
                     "console_http_path": "/",
                     "console_http_port": 80,
                     "console_resolution": "1024x768",
-                    "container_id": "84391f4468eedd7c5aaeb9497f4854ae9c241592bb4288d361fe6ed812ae1b38",
+                    "container_id": "cbf0bccca1a69ae67f3412ef077c32b3cb3c08b7dc8ff23274c71fb2a22b2493",
                     "cpus": 0.0,
                     "created_at": "2025-04-22T01:18:08",
                     "environment": null,
