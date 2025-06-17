@@ -5,9 +5,11 @@ services:
       dockerfile: dockerfile
     environment:
       - GNS3_DOCKER_HOST=unix:///var/run/docker.sock
+      - JWT_SECRET_KEY=f2c74b6c95b8f858f43785ea30f71c2e5b18e9fc8dd1cb1124f5c8f170ae77bc
     ports:
-      - "8001:3080"
+      - "8000:3080"
       - "5000-5400:5000-5400" # Dynamips, etc
+      - "5900-5910:5900-5910" # vnc 
       - "39978:39978"
     cap_add:
       - NET_ADMIN

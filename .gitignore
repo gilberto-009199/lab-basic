@@ -1,1 +1,7 @@
 *.log
+gns3/images/IOS
+gns3/images/IOS/*
+gns3/images/IOU
+gns3/images/IOU/*
+gns3/images/QEMU
+gns3/images/QEMU/*

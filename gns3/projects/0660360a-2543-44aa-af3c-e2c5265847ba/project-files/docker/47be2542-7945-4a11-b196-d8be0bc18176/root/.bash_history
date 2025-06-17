@@ -48,3 +48,15 @@ ping google.com
 clear
 ip add
 exit
+dhclient
+sudo dhclient
+exit
+ping 8.8.8.8
+lynx
+sudo apt update
+apt update
+clear
+apt install lynx
+clear
+lynx google.com
+exit
